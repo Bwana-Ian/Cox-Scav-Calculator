@@ -15,7 +15,8 @@ import java.awt.image.BufferedImage;
 @Slf4j
 @PluginDescriptor(
 	name = "Cox Scav Calculator",
-		description = "Calculates Scav Drops and Herbs for potions in Cox"
+	description = "Calculates Scav Drops and Herbs for potions in Cox",
+	tags = {"CoX", "Bwana Ian", "Scavs", "Potions"}
 )
 public class CoxScavCalculatorPlugin extends Plugin
 {
@@ -36,13 +37,6 @@ public class CoxScavCalculatorPlugin extends Plugin
 	{
 		clientToolbar.removeNavigation(navButton);
 
-	}
-
-	@Subscribe
-	private void onGameTick(GameTick gameTick)
-	{
-		// runs every gametick
-		;
 	}
 
 	private void startPanel(){
