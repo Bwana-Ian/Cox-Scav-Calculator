@@ -1,53 +1,61 @@
 package com.coxscavcalculator;
 
-import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.config.ConfigManager;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ImageUtil;
+
+import java.awt.image.BufferedImage;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Cox Scav Calculator"
+	name = "Cox Scav Calculator",
+		description = "Calculates Scav Drops and Herbs for potions in Cox"
 )
 public class CoxScavCalculatorPlugin extends Plugin
 {
 	@Inject
-	private Client client;
+	private ClientToolbar clientToolbar;
 
-	@Inject
-	private CoxScavCalculatorConfig config;
+	private CoxScavCalculatorPanel panel;
+	private NavigationButton navButton;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		log.info("Cox Scav Calculator started!");
+		startPanel();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		log.info("Cox Scav Calculator stopped!");
+		clientToolbar.removeNavigation(navButton);
+
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameTick(GameTick gameTick)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Cox Scav Calculator says " + config.greeting(), null);
-		}
+		// runs every gametick
+		;
 	}
 
-	@Provides
-	CoxScavCalculatorConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(CoxScavCalculatorConfig.class);
+	private void startPanel(){
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
+		panel = injector.getInstance(CoxScavCalculatorPanel.class);
+
+		navButton = NavigationButton.builder()
+				.tooltip("Cox Scavs")
+				.icon(icon)
+				.priority(7)
+				.panel(panel)
+				.build();
+
+		clientToolbar.addNavigation(navButton);
 	}
 }
