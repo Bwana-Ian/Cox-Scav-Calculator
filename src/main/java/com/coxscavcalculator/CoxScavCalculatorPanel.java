@@ -90,8 +90,10 @@ public class CoxScavCalculatorPanel extends PluginPanel {
             {
                 if (e.getButton() == MouseEvent.BUTTON1)
                 {
+                    label.setText("Wait...");
                     runCalculation();
                     setItemPanel();
+                    label.setText("Calculate");
                 }
             }
         });
@@ -186,15 +188,31 @@ public class CoxScavCalculatorPanel extends PluginPanel {
     }
 
     private void runCalculation(){
+
         int aid, enhance, overload, revit;
         try {
             aid = Integer.parseInt(aidText.getText());
+        } catch (Exception e){
+            aid = 0;
+            aidText.setText("0");
+        }
+        try {
             enhance = Integer.parseInt(enhanceText.getText());
+        } catch (Exception e){
+            enhance = 0;
+            enhanceText.setText("0");
+        }
+        try {
             overload = Integer.parseInt(overloadText.getText());
+        } catch (Exception e){
+            overload = 0;
+            overloadText.setText("0");
+        }
+        try {
             revit = Integer.parseInt(revitText.getText());
         } catch (Exception e){
-            //Idk some kinda gay ass exception handling
-            return;
+            revit = 0;
+            revitText.setText("0");
         }
 
         plankCount = 0;
