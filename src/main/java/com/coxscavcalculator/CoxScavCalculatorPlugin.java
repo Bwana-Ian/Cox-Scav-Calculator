@@ -1,4 +1,4 @@
-package net.runelite.coxscavcalculator;
+package com.coxscavcalculator;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
